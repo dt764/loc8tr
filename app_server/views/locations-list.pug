@@ -3,26 +3,26 @@ extends layout
 block content
     .row.banner
         .col-12
-            h1 Loc8r 
-            small &nbsp Find places to work with wifi near you!
+            h1= pageHeader.title
+            small &nbsp #{pageHeader.strapline}
     .row
         .col-12.col-md-8
-            .card.mt-4.mb-4 
-                .card-body 
-                    h4.card-title 
-                        a(href='/location') Starcups
-                        small &nbsp;
-                            i.fas.fa-star
-                            i.fas.fa-star
-                            i.fas.fa-star
-                            i.far.fa-star
-                            i.far.fa-star
-                        span.badge.badge-pill.badge-secondary.float-right 100m
-                    p.address 125 High Street, Reading RG6 1PS
-                    .facilities 
-                        span.badge.badge-warning Hot drinks
-                        span.badge.badge-warning Food
-                        span.badge.badge-warning Premium wifi
+            each location in locations  
+                .card.mt-4.mb-4 
+                    .card-body 
+                        h4.card-title 
+                            a(href='/location') #{location.name}
+                            small &nbsp;
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.far.fa-star
+                                i.far.fa-star
+                            span.badge.badge-pill.badge-secondary.float-right #{location.distance}
+                        p.address= location.address
+                        .facilities
+                            each facility in location.facilities
+                                span.badge.badge-warning= facility
                         
         .col-12.col-md-4 
             p.lead Loc8tr helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8tr help you find the place you're looking for.

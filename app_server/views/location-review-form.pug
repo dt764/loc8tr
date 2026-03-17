@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+    .row.banner
+        .col-12
+            h1 Review Star
+           
+    .row
+        .col-12.col-lg-9
+            form(method='post', action='/location/review/new')
+                .form-group 
+                    label(for='name') Name 
+                    input.form-control(type='text', id='name', name='name', placeholder='Name')
+                .form-group 
+                    label(for='rating') Rating 
+                    select.form-control(id='rating', name='rating')
+                        option(value='5') 5
+                        option(value='4') 4
+                        option(value='3') 3
+                        option(value='2') 2
+                        option(value='1') 1
+                .form-group 
+                    label(for='review') Review 
+                    textarea.form-control(id='review', name='review', rows='5')
+                button.btn.btn-primary(type='submit') Submit review
