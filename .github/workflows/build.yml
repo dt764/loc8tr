@@ -12,8 +12,24 @@ jobs:
     container: node:20-alpine
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Install git
+        run: apk add --no-cache git
+
+      - uses: actions/checkout@v4
+
+      - name: Git workaruound
+        run: git config --global --add safe.directory /"${GITHUB_WORKSPACE}"
+
       - name: Install dependencies
         run: npm ci
-      - name: Run tests
+
+      - name: Run tests (Jest JUnit)
         run: npm test
+
+      - name: Test Report
+        uses: dorny/test-reporter@v3
+        if: ${{ always() }}
+        with:
+          name: JEST Tests
+          path: reports/junit/junit.xml
+          reporter: jest-junit
