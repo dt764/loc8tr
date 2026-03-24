@@ -1,4 +1,4 @@
-const controller = require('../../controllers/locations');
+const controller = require('../../app_server/controllers/locations');
 
 describe('controllers/locations', () => {
   test('sendJsonResponse sets status and json', () => {
