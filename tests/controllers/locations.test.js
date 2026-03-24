@@ -1,18 +1,56 @@
 const controller = require('../../app_server/controllers/locations');
 
 describe('controllers/locations', () => {
-  test('sendJsonResponse sets status and json', () => {
-    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
-    controller.sendJsonResponse(res, 200, { message: 'ok' });
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ message: 'ok' });
+
+  test('homeList renders locations-list view with correct data', () => {
+    const req = {};
+    const res = {
+      render: jest.fn()
+    };
+
+    controller.homeList(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'locations-list',
+      expect.objectContaining({
+        title: expect.any(String),
+        pageHeader: expect.any(Object),
+        locations: expect.any(Array),
+        sidebar: expect.any(String)
+      })
+    );
   });
 
-  test('exports basic CRUD handlers', () => {
-    expect(typeof controller.locationsListByDistance).toBe('function');
-    expect(typeof controller.locationsCreate).toBe('function');
-    expect(typeof controller.locationsReadOne).toBe('function');
-    expect(typeof controller.locationsUpdateOne).toBe('function');
-    expect(typeof controller.locationsDeleteOne).toBe('function');
+  test('locationInfo renders location-info view', () => {
+    const req = {};
+    const res = {
+      render: jest.fn()
+    };
+
+    controller.locationInfo(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'location-info',
+      expect.objectContaining({
+        title: 'Location Info'
+      })
+    );
   });
+
+  test('addReview renders location-review-form view', () => {
+    const req = {};
+    const res = {
+      render: jest.fn()
+    };
+
+    controller.addReview(req, res);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'location-review-form',
+      expect.objectContaining({
+        title: 'Add Review'
+      })
+    );
+  });
+
 });
