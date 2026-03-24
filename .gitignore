@@ -63,3 +63,6 @@ typings/
 # test coverage and reports
 coverage/
 reports/
+
+# mongoose data
+data/
