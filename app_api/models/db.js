@@ -4,6 +4,8 @@ const dbURI = 'mongodb://loc8r:loc8rpass@localhost:27017/loc8tr?authSource=admin
 
 mongoose.connect(dbURI);
 
+require('./locations');
+
 mongoose.connection.on('connected', () => {
     console.log(`Mongoose connected to ${dbURI}`);
 });
