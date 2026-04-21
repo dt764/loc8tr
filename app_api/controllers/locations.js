@@ -51,10 +51,15 @@ const locationsReadOne = async (req, res) => {
 
 const locationsUpdateOne = async (req, res) => {
     try {
-        const locations = await Loc.findByIdAndUpdate(req.params.locationid, req.body).exec();
-        res
-            .status(200)
-            .json(locations);
+        const locations = await Loc.findByIdAndUpdate(
+            req.params.locationid,
+            req.body,
+            {new: true, runValidators: true}
+        );
+        if (!locations) {
+            return res.status(404).json({message: 'not found'});
+        }
+        return res.status(200).json(locations);
     } catch (err) {
         res
             .status(500)
@@ -62,11 +67,20 @@ const locationsUpdateOne = async (req, res) => {
     }
 }
 
-const locationsDeleteOne = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        message: 'locationsDeleteOne'
-    });
+const locationsDeleteOne = async (req, res) => {
+    try {
+        const location = await Loc.findByIdAndDelete(req.params.locationid).exec();
+        if (!location) {
+            return res
+                .status(404)
+                .json({message: 'not found'});
+        }
+        return res.status(204).json();
+    } catch (err) {
+        res
+            .status(500)
+            .json(err);
+    }
 }
 
 module.exports = {
