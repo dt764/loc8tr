@@ -15,11 +15,14 @@ mongoose.connection.on('disconnected', () => {
     console.log('Mongoose disconnected');
 });
 
-const gracefulShutdown = (msg, callback) => {
-    mongoose.connection.close(() => {
-        console.log(`Mongoose disconnected through ${msg} `);
-        callback();
-    });
+const gracefulShutdown = async (msg, callback) => {
+    try {
+        await mongoose.connection.close();
+    } catch (e) {
+        // ignore close errors
+    }
+    console.log(`Mongoose disconnected through ${msg} `);
+    callback();
 };
 
 // For nodemon restarts
