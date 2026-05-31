@@ -1,69 +1,64 @@
 extends layout
 
+include _includes/sharedHTMLfunctions
+
 block content
-    .row.banner
+  .row.banner
+    .col-12
+      h1 #{location.name}
+  .row
+    .col-12.col-lg-9
+      .row
+        .col-12.col-md-6
+          .card.shadow-sm.mb-4
+            .card-body
+              p.mb-2
+                +outputRating(location.rating)
+              p.text-muted.mb-3
+                i.fas.fa-map-pin.mr-2
+                | #{location.address}
+              h5.card-subtitle.mb-3.text-muted Opening hours
+              each openingTimes in location.openingTimes
+                .opening-hours-card(class=openingTimes.closed ? 'closed' : '').p-3.mb-2.rounded
+                  .d-flex.justify-content-between.align-items-center
+                    strong #{openingTimes.days}
+                    if openingTimes.closed
+                      span.badge.badge-danger Closed
+                    else
+                      span.badge.badge-success #{openingTimes.opening} - #{openingTimes.closing}
+              h5.card-subtitle.mt-4.mb-3.text-muted Facilities
+              .d-flex.flex-wrap
+                each facility in location.facilities
+                  span.badge.badge-warning.mr-2.mb-2
+                    i.fas.fa-check.mr-1
+                    | #{facility}
+        .col-12.col-md-6
+          .card.shadow-sm.mb-4
+            .card-body
+              h5.card-subtitle.mb-3.text-muted Location Map
+              img.img-fluid.rounded(src="https://placehold.co/400x250/78c2ad/fff?text=Map", alt="Map placeholder")
+      .row
         .col-12
-            h1 #(location.name)
-           
-    .row
-        .col-12.col-lg-9
-            .row 
-                .col-12.col-md-6
-                    p.
-                        +outputRating(location.rating)
-                    p #{location.address}
-                    .card.card-primary.mt-2.mb-2 
-                        .card-body 
-                            h2.card-title Opening hours 
-                            p.card-text Monday - Friday : 7:00am - 7:00pm
-                            p.card-text Saturday : 8:00am - 5:00pm
-                            p.card-text Sunday : closed
-                    .card.card-primary 
-                        .card-body 
-                            h2.card-title Facilities 
-                            each facility in location.facilities
-                                span.badge.badge-warning= facility
-                .col-12.col-md-6
-                    .card.card-primary 
-                        .card-body 
-                            h2.card-title Location map 
-                            img(src='https://placehold.co/355x320', alt='Map placeholder')
-                            
-            .row 
-                .col-12
-                    .card.card-primary.mt-4.mb-4 
-                        .card-body.p-0 
-                            h2.card-title.p-3 Customer reviews
-                                a.btn.btn-secondary.float-right(href='/location/review/new') Add review
-                            p.bg-primary.text-white.p-2
-                                small.mr-2 &nbsp;
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.far.fa-star
-                                    i.far.fa-star
-                                span.card-text.mr-2 Simon Holmes
-                                small 16 February 2019
-                                p.pb-3.pl-2 What a great place. I can't say enough good things about it.
-                            p.bg-primary.text-white.p-2
-                                small.mr-2 &nbsp;
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.far.fa-star
-                                span.card-text.mr-2 Antonio Becerra
-                                small 14 February 2019
-                                p.p-2 What a great place. I can't say enough good things about it.
-                            p.bg-primary.text-white.p-2
-                                small.mr-2 &nbsp;
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.fas.fa-star
-                                    i.far.fa-star
-                                    i.far.fa-star
-                                span.card-text.mr-2 Simon Holmes
-                                small 16 February 2019
-                                p.p-2 What a great place. I can't say enough good things about it.
-        .col-12.col-lg-3
-            p.lead Starcups is on Loc8tr because it has accessible wifi and space to sit down with your laptop and get some work done.    
+          .card.shadow-sm
+            .card-body
+              .d-flex.justify-content-between.align-items-center.mb-3
+                h5.card-subtitle.text-muted.mb-0 Customer reviews
+                a.btn.btn-primary.btn-sm(href=`/location/${location._id}/review/new`)
+                  i.fas.fa-plus.mr-1
+                  | Add Review
+              if location.reviews.length
+                each review in location.reviews
+                  .review-item
+                    .d-flex.align-items-center
+                      +outputRating(review.rating)
+                      span.review-author #{review.author}
+                      span.review-date #{review.createdOn}
+                    p.review-text.mb-0 #{review.reviewText}
+              else
+                p.text-muted.mb-0 No reviews yet. Be the first!
+    .col-12.col-lg-3
+      .card.shadow-sm.location-sidebar
+        .card-body
+          h5.card-subtitle.text-muted.mb-3 About
+          p #{location.name} is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.
+          p If you've been and you like it or if you don't, please leave a review to help other people just like you.

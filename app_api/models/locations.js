@@ -16,8 +16,8 @@ const reviewSchema = new mongoose.Schema ({
 
 const locationSchema = new mongoose.Schema ({
     name: { type: String, required: true },
-    address: { type: String, required: true },
-    rating: { type: Number, default: 0, min: 0, max: 5 },
+    address: String,
+    rating: { type: Number, min: 0, max: 5 },
     facilities: [String],
     coords: {
         type: {type: String, default: 'Point'},

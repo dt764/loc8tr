@@ -1,25 +1,32 @@
-extends layout 
+extends layout
 
-block content 
-    .row.banner
-        .col-12
-            h1 Review Star
-           
-    .row
-        .col-12.col-lg-9
-            form(method='post', action='/location/review/new')
-                .form-group 
-                    label(for='name') Name 
-                    input.form-control(type='text', id='name', name='name', placeholder='Name')
-                .form-group 
-                    label(for='rating') Rating 
-                    select.form-control(id='rating', name='rating')
-                        option(value='5') 5
-                        option(value='4') 4
-                        option(value='3') 3
-                        option(value='2') 2
-                        option(value='1') 1
-                .form-group 
-                    label(for='review') Review 
-                    textarea.form-control(id='review', name='review', rows='5')
-                button.btn.btn-primary(type='submit') Submit review
+block content
+  .row.banner
+    .col-12
+      h1
+        i.fas.fa-pen.mr-2
+        | Review "#{location.name}"
+  .row.justify-content-center
+    .col-12.col-md-8.col-lg-6
+      .card.shadow-sm
+        .card-body.p-4
+          form(action=`/location/${location._id}/review/new` method="POST")
+            .form-group
+              label.font-weight-bold(for="name") Your name
+              input.form-control(type="text" id="name" name="name" placeholder="Enter your name")
+            .form-group
+              label.font-weight-bold(for="rating") Rating
+              select.form-control(id="rating" name="rating")
+                option(value="" disabled selected) Select a rating...
+                option(value="5") 5 - Excellent
+                option(value="4") 4 - Good
+                option(value="3") 3 - Average
+                option(value="2") 2 - Poor
+                option(value="1") 1 - Terrible
+                option(value="0") 0 - Awful
+            .form-group
+              label.font-weight-bold(for="review") Your review
+              textarea.form-control(id="review" rows="5" placeholder="Share your experience..." name="review")
+            button.btn.btn-primary(type="submit")
+              i.fas.fa-paper-plane.mr-1
+              | Submit Review

@@ -1,0 +1,7 @@
+mixin outputRating(rating)
+  .rating
+    - for (var i = 0; i < 5; i++)
+      if (i < rating)
+        i.fas.fa-star
+      else
+        i.far.fa-star

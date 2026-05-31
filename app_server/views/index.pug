@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .jumbotron.bg-white.shadow-sm.mt-3
+    h1.display-4
+      i.fas.fa-map-marker-alt.text-success.mr-2
+      | #{title}
+    p.lead Welcome to Loc8r — find the perfect place to work with wifi near you.
+    hr.my-4
+    p Browse locations, read reviews, and share your own experiences.
+    a.btn.btn-primary.btn-lg(href="/")
+      i.fas.fa-search.mr-2
+      | Find places

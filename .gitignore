@@ -61,8 +61,7 @@ typings/
 .next
 
 # test coverage and reports
-coverage/
-reports/
+reports
 
-# mongoose data
-data/
+# moongose data
+data

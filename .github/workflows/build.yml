@@ -9,27 +9,33 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:20-alpine
-
+    container: node:22-alpine
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
     steps:
-      - name: Install git
-        run: apk add --no-cache git
-
-      - uses: actions/checkout@v4
-
-      - name: Git workaruound
-        run: git config --global --add safe.directory /"${GITHUB_WORKSPACE}"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests (Jest JUnit)
-        run: npm test
-
-      - name: Test Report
-        uses: dorny/test-reporter@v3
-        if: ${{ always() }}
-        with:
-          name: JEST Tests
-          path: reports/junit/junit.xml
-          reporter: jest-junit
+    - name: Install git and bash
+      run: apk add --no-cache git bash
+    - uses: actions/checkout@v2
+    - name: Git Workaround
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+    - name: Install dependencies
+      run: |
+        npm ci
+    - name: Run tests
+      run: |
+        npm test
+    - name: Test Report
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}
+      with:
+        name: JEST Tests
+        path: reports/junit/junit.xml
+        reporter: jest-junit
+    - name: Test
+      uses: mattallty/jest-github-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        test-command: "npm run test"

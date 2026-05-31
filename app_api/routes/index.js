@@ -3,19 +3,16 @@ const router = express.Router();
 const ctrlLocations = require('../controllers/locations');
 const ctrlReviews = require('../controllers/reviews');
 
-/* Locations pages */
 router.get('/locations', ctrlLocations.locationsReadAll);
+router.get('/locations/:locationId', ctrlLocations.locationsReadOne)
+
 router.post('/locations', ctrlLocations.locationsCreate);
+router.put('/locations/:locationId', ctrlLocations.locationsUpdate);
+router.patch('/locations/:locationId', ctrlLocations.locationsPartialUpdate);
+router.delete('/locations/:locationId', ctrlLocations.locationsDelete);
 
-router.get('/locations/:locationid', ctrlLocations.locationsReadOne);
-router.put('/locations/:locationid', ctrlLocations.locationsUpdateOne);
-router.delete('/locations/:locationid', ctrlLocations.locationsDeleteOne);
+router.get('/locations/:locationId/reviews/:reviewId', ctrlReviews.reviewsReadOne)
 
-/* Reviews pages */
-router.post('/locations/:locationid/reviews', ctrlReviews.reviewsCreate);
-
-router.get('/locations/:locationid/reviews/:reviewid', ctrlReviews.reviewsReadOne);
-router.put('/locations/:locationid/reviews/:reviewid', ctrlReviews.reviewsUpdateOne);
-router.delete('/locations/:locationid/reviews/:reviewid', ctrlReviews.reviewsDeleteOne);
+router.post('/locations/:locationId/reviews', ctrlReviews.reviewsCreate);
 
 module.exports = router;

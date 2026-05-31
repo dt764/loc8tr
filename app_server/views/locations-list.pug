@@ -1,29 +1,39 @@
 extends layout
 
+include _includes/sharedHTMLfunctions
+
 block content
-    .row.banner
-        .col-12
-            h1= pageHeader.title
-            small &nbsp #{pageHeader.strapline}
-    .row
-        .col-12.col-md-8
-            each location in locations  
-                .card.mt-4.mb-4 
-                    .card-body 
-                        h4.card-title 
-                            a(href='/location/#{location._id}') #{location.name}
-                            small &nbsp;
-                                i.fas.fa-star
-                                i.fas.fa-star
-                                i.fas.fa-star
-                                i.far.fa-star
-                                i.far.fa-star
-                            span.badge.badge-pill.badge-secondary.float-right #{location.distance}
-                        p.address= location.address
-                        .facilities
-                            each facility in location.facilities
-                                span.badge.badge-warning= facility
-                        
-        .col-12.col-md-4 
-            p.lead Loc8tr helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8tr help you find the place you're looking for.
-        
+  .row.banner
+    .col-12
+      h1= pageHeader.title
+      p.strapline &nbsp; #{pageHeader.strapline}
+  .row
+    .col-12.col-md-8
+      if locations.length
+        each location in locations
+          .card.shadow-sm.mb-4.location-card
+            .card-body
+              .d-flex.justify-content-between.align-items-start
+                div
+                  h4.card-title.mb-1
+                    a.text-dark(href=`/location/${location._id}`)
+                      i.fas.fa-store.mr-2
+                      | #{location.name}
+                  .d-flex.align-items-center.mt-1
+                    +outputRating(location.rating)
+                if location.distance
+                  span.badge.badge-pill.badge-secondary #{location.distance}
+              p.card-text.text-muted.mt-2.mb-2
+                i.fas.fa-map-pin.mr-1
+                | #{location.address}
+              if location.facilities && location.facilities.length
+                .facilities
+                  each facility in location.facilities
+                    span.badge.badge-warning #{facility}
+      else
+        .alert.alert-info No locations found.
+    .col-12.col-md-4
+      .card.shadow-sm
+        .card-body
+          h5.card-subtitle.text-muted.mb-3 How it works
+          p.lead.mb-0 Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.
