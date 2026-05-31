@@ -4,9 +4,13 @@ include _includes/sharedHTMLfunctions
 
 block content
   .row.banner
-    .col-12
-      h1= pageHeader.title
-      p.strapline &nbsp; #{pageHeader.strapline}
+    .col-12.d-flex.justify-content-between.align-items-center
+      div
+        h1.mb-0= pageHeader.title
+        p.strapline.mb-0 &nbsp; #{pageHeader.strapline}
+      a.btn.btn-primary(href="/location/new")
+        i.fas.fa-plus.mr-1
+        | New Location
   .row
     .col-12.col-md-8
       if locations.length
@@ -20,7 +24,7 @@ block content
                       i.fas.fa-store.mr-2
                       | #{location.name}
                   .d-flex.align-items-center.mt-1
-                    +outputRating(location.rating)
+                    +outputRating(location.computedRating || location.rating)
                 if location.distance
                   span.badge.badge-pill.badge-secondary #{location.distance}
               p.card-text.text-muted.mt-2.mb-2

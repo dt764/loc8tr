@@ -4,8 +4,13 @@ include _includes/sharedHTMLfunctions
 
 block content
   .row.banner
-    .col-12
-      h1 #{location.name}
+    .col-12.d-flex.justify-content-between.align-items-center
+      h1.mb-0 #{location.name}
+      div
+        a.btn.btn-outline-primary.btn-sm.mr-1(href=`/location/${location._id}/edit`)
+          i.fas.fa-edit
+        a.btn.btn-outline-danger.btn-sm(href=`/location/${location._id}/delete`)
+          i.fas.fa-trash-alt
   .row
     .col-12.col-lg-9
       .row
@@ -13,30 +18,39 @@ block content
           .card.shadow-sm.mb-4
             .card-body
               p.mb-2
-                +outputRating(location.rating)
+                +outputRating(location.computedRating || location.rating)
               p.text-muted.mb-3
                 i.fas.fa-map-pin.mr-2
                 | #{location.address}
               h5.card-subtitle.mb-3.text-muted Opening hours
-              each openingTimes in location.openingTimes
-                .opening-hours-card(class=openingTimes.closed ? 'closed' : '').p-3.mb-2.rounded
-                  .d-flex.justify-content-between.align-items-center
-                    strong #{openingTimes.days}
-                    if openingTimes.closed
-                      span.badge.badge-danger Closed
-                    else
-                      span.badge.badge-success #{openingTimes.opening} - #{openingTimes.closing}
+              if location.openingTimes && location.openingTimes.length
+                each openingTimes in location.openingTimes
+                  .opening-hours-card(class=openingTimes.closed ? 'closed' : '').p-3.mb-2.rounded
+                    .d-flex.justify-content-between.align-items-center
+                      strong #{openingTimes.days}
+                      if openingTimes.closed
+                        span.badge.badge-danger Closed
+                      else
+                        span.badge.badge-success #{openingTimes.opening} - #{openingTimes.closing}
+              else
+                p.text-muted No opening hours available
               h5.card-subtitle.mt-4.mb-3.text-muted Facilities
-              .d-flex.flex-wrap
-                each facility in location.facilities
-                  span.badge.badge-warning.mr-2.mb-2
-                    i.fas.fa-check.mr-1
-                    | #{facility}
+              if location.facilities && location.facilities.length
+                .d-flex.flex-wrap
+                  each facility in location.facilities
+                    span.badge.badge-warning.mr-2.mb-2
+                      i.fas.fa-check.mr-1
+                      | #{facility}
+              else
+                p.text-muted No facilities listed
         .col-12.col-md-6
           .card.shadow-sm.mb-4
             .card-body
               h5.card-subtitle.mb-3.text-muted Location Map
-              img.img-fluid.rounded(src="https://placehold.co/400x250/78c2ad/fff?text=Map", alt="Map placeholder")
+              if location.coords && location.coords.coordinates
+                img.img-fluid.rounded(src=`https://staticmap.openstreetmap.de/staticmap.php?center=${location.coords.coordinates[1]},${location.coords.coordinates[0]}&zoom=14&size=400x250&maptype=mapnik&markers=${location.coords.coordinates[1]},${location.coords.coordinates[0]}`, alt="Location map")
+              else
+                img.img-fluid.rounded(src="https://placehold.co/400x250/2C3E50/fff?text=No+map+data", alt="Map placeholder")
       .row
         .col-12
           .card.shadow-sm
@@ -46,19 +60,33 @@ block content
                 a.btn.btn-primary.btn-sm(href=`/location/${location._id}/review/new`)
                   i.fas.fa-plus.mr-1
                   | Add Review
-              if location.reviews.length
+              if location.reviews && location.reviews.length
                 each review in location.reviews
                   .review-item
-                    .d-flex.align-items-center
-                      +outputRating(review.rating)
-                      span.review-author #{review.author}
-                      span.review-date #{review.createdOn}
+                    .d-flex.align-items-center.justify-content-between
+                      .d-flex.align-items-center
+                        +outputRating(review.rating)
+                        span.review-author #{review.author}
+                        span.review-date #{review.createdOn}
+                      div
+                        a.btn.btn-outline-primary.btn-sm.mr-1(href=`/location/${location._id}/review/${review._id}/edit`)
+                          i.fas.fa-edit
+                        a.btn.btn-outline-danger.btn-sm(href=`/location/${location._id}/review/${review._id}/delete`)
+                          i.fas.fa-trash-alt
                     p.review-text.mb-0 #{review.reviewText}
               else
                 p.text-muted.mb-0 No reviews yet. Be the first!
     .col-12.col-lg-3
-      .card.shadow-sm.location-sidebar
+      .card.shadow-sm.location-sidebar.mb-3
         .card-body
           h5.card-subtitle.text-muted.mb-3 About
           p #{location.name} is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.
           p If you've been and you like it or if you don't, please leave a review to help other people just like you.
+      .card.shadow-sm.location-sidebar
+        .card-body
+          a.btn.btn-outline-primary.btn-block(href=`/location/${location._id}/edit`)
+            i.fas.fa-edit.mr-1
+            | Edit location
+          a.btn.btn-outline-danger.btn-block.mt-2(href=`/location/${location._id}/delete`)
+            i.fas.fa-trash-alt.mr-1
+            | Delete location

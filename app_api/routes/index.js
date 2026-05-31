@@ -12,7 +12,9 @@ router.patch('/locations/:locationId', ctrlLocations.locationsPartialUpdate);
 router.delete('/locations/:locationId', ctrlLocations.locationsDelete);
 
 router.get('/locations/:locationId/reviews/:reviewId', ctrlReviews.reviewsReadOne)
-
 router.post('/locations/:locationId/reviews', ctrlReviews.reviewsCreate);
+router.put('/locations/:locationId/reviews/:reviewId', ctrlReviews.reviewsUpdateOne);
+router.patch('/locations/:locationId/reviews/:reviewId', ctrlReviews.reviewsPatchOne);
+router.delete('/locations/:locationId/reviews/:reviewId', ctrlReviews.reviewsDeleteOne);
 
 module.exports = router;

@@ -28,5 +28,12 @@ const locationSchema = new mongoose.Schema ({
     reviews: [reviewSchema]
 });
 
-mongoose.model('Location', locationSchema);
+locationSchema.virtual('computedRating').get(function() {
+    if (!this.reviews || this.reviews.length === 0) return 0;
+    const sum = this.reviews.reduce((total, review) => total + review.rating, 0);
+    return Math.round((sum / this.reviews.length) * 10) / 10;
+});
 
+locationSchema.set('toJSON', { virtuals: true });
+
+mongoose.model('Location', locationSchema);

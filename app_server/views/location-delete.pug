@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .row.banner
+    .col-12
+      h1
+        i.fas.fa-trash-alt.text-danger.mr-2
+        | Delete Location
+  .row.justify-content-center
+    .col-12.col-md-8.col-lg-6
+      .card.shadow-sm.border-danger
+        .card-body.p-4.text-center
+          h3.text-danger Are you sure?
+          p.lead You are about to delete
+            strong  "#{location.name}"
+          p.text-muted This action cannot be undone.
+          form(action=`/location/${location._id}/delete` method="POST")
+            button.btn.btn-danger.btn-lg(type="submit")
+              i.fas.fa-trash-alt.mr-1
+              | Yes, delete it
+            a.btn.btn-secondary.btn-lg.ml-2(href=`/location/${location._id}`) Cancel

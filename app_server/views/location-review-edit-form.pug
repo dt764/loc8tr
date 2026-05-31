@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .row.banner
+    .col-12
+      h1
+        i.fas.fa-pen.mr-2
+        | Edit Review for "#{location.name}"
+  .row.justify-content-center
+    .col-12.col-md-8.col-lg-6
+      .card.shadow-sm
+        .card-body.p-4
+          form(action=`/location/${location._id}/review/${review._id}/edit` method="POST")
+            .form-group
+              label.font-weight-bold(for="name") Your name
+              input.form-control(type="text" id="name" name="name" value=review.author placeholder="Enter your name")
+            .form-group
+              label.font-weight-bold(for="rating") Rating
+              select.form-control(id="rating" name="rating")
+                option(value="5" selected=review.rating==5) 5 - Excellent
+                option(value="4" selected=review.rating==4) 4 - Good
+                option(value="3" selected=review.rating==3) 3 - Average
+                option(value="2" selected=review.rating==2) 2 - Poor
+                option(value="1" selected=review.rating==1) 1 - Terrible
+                option(value="0" selected=review.rating==0) 0 - Awful
+            .form-group
+              label.font-weight-bold(for="review") Your review
+              textarea.form-control(id="review" rows="5" placeholder="Share your experience..." name="review") #{review.reviewText}
+            button.btn.btn-primary(type="submit")
+              i.fas.fa-save.mr-1
+              | Update Review
+            a.btn.btn-secondary.ml-2(href=`/location/${location._id}`) Cancel

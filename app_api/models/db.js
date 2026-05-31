@@ -43,4 +43,12 @@ process.on('SIGTERM', () => {
     });
 });
 
+// For uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.log('Uncaught Exception:', err.message);
+    gracefulShutdown('uncaught exception', () => {
+        process.exit(1);
+    });
+});
+
 require('./locations');
